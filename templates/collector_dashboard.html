@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock title %}
+
+{% block body %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-2 d-none d-lg-block px-4">
+            <div class="sidebar shadow-sm">
+                <a href="/" class="{% if page == 'home' %}active{% endif %}"><i class="bi bi-house me-2"></i>Dashboard</a>
+                <a href="/order" class="{% if page == 'order' %}active{% endif %}"><i class="bi bi-box me-2"></i>Orders</a>
+                <a href="/notify" class="{% if page == 'notification' %}active{% endif %}"><i class="bi bi-bell me-2"></i>Notification</a>
+                <a href="/price" class="{% if page == 'pricing' %}active{% endif %}"><i class="bi bi-cash me-2"></i>Pricing</a>
+                <a href="/setting" class="{% if page == 'setting' %}active{% endif %}"><i class="bi bi-gear me-2"></i>Setting</a>
+                <a href="/support" class="{% if page == 'support' %}active{% endif %}"><i class="bi bi-headset me-2"></i>Support & Help</a>
+                <a href="/profile" class="{% if page == 'profile' %}active{% endif %}"><i class="bi bi-person-circle me-2"></i>Profile</a>
+                <a href="/logout" class="{% if page == 'logout' %}active{% endif %}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+            </div>
+        </div>
+
+        <!-- PAGE CONTENT -->
+        <div class="col-lg-10 px-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold">{{request.user.username|capfirst}}, Welcome to Scrapify!</h4>
+                <button class="btn btn-success">
+                    <i class="bi bi-plus"></i> Edit Price
+                </button>
+            </div>
+
+            <!-- YOUR EXISTING SCRAP CARDS (UNCHANGED) -->
+            {{ block.super }}
+
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}
+Setting
+{% endblock title %}
+
+{% block body %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-2 d-none d-lg-block px-4">
+            <div class="sidebar shadow-sm">
+                <a href="/" class="{% if page == 'home' %}active{% endif %}"><i class="bi bi-house me-2"></i>Dashboard</a>
+                <a href="/order" class="{% if page == 'order' %}active{% endif %}"><i class="bi bi-box me-2"></i>Orders</a>
+                <a href="/notify" class="{% if page == 'notification' %}active{% endif %}"><i class="bi bi-bell me-2"></i>Notification</a>
+                <a href="/price" class="{% if page == 'pricing' %}active{% endif %}"><i class="bi bi-cash me-2"></i>Pricing</a>
+                <a href="/setting" class="{% if page == 'setting' %}active{% endif %}"><i class="bi bi-gear me-2"></i>Setting</a>
+                <a href="/support" class="{% if page == 'support' %}active{% endif %}"><i class="bi bi-headset me-2"></i>Support & Help</a>
+                <a href="/profile" class="{% if page == 'profile' %}active{% endif %}"><i class="bi bi-person-circle me-2"></i>Profile</a>
+                <a href="/logout" class="{% if page == 'logout' %}active{% endif %}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+            </div>
+        </div>
+
+
+<!-- ================= LAYOUT ================= -->
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+
+      <div class="card shadow-sm border-0" style="max-width: 600px;">
+        <div class="card-body">
+
+          <h4 class="card-title mb-4">Settings</h4>
+
+          <!-- ================= DARK THEME ================= -->
+          <div class="mb-4">
+            <h6 class="border-bottom pb-2 mb-3">Dark Theme</h6>
+
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="darkMode">
+              <label class="form-check-label" for="darkMode">
+                Enable Dark Mode
+              </label>
+            </div>
+          </div>
+
+          <!-- ================= NOTIFICATIONS ================= -->
+          <div class="mb-4">
+            <h6 class="border-bottom pb-2 mb-3">Notification Settings</h6>
+
+            <div class="form-check form-switch mb-2">
+              <input class="form-check-input" type="checkbox" id="emailNotify" checked>
+              <label class="form-check-label" for="emailNotify">
+                Email Notifications
+              </label>
+            </div>
+
+            <div class="form-check form-switch mb-2">
+              <input class="form-check-input" type="checkbox" id="smsNotify" checked>
+              <label class="form-check-label" for="smsNotify">
+                SMS Notifications
+              </label>
+            </div>
+
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="pushNotify">
+              <label class="form-check-label" for="pushNotify">
+                Push Notifications
+              </label>
+            </div>
+          </div>
+
+          <!-- ================= SAVE BUTTON ================= -->
+          <button class="btn btn-success w-100">
+            Save Changes
+          </button>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ================= DARK MODE SCRIPT ================= -->
+<script>
+  const toggle = document.getElementById("darkMode");
+
+  toggle.addEventListener("change", () => {
+    document.body.classList.toggle("bg-dark");
+    document.body.classList.toggle("text-white");
+  });
+</script>
+
+{%endblock body%}

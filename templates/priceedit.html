@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock title %}
+
+{% block body %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-2 d-none d-lg-block px-4">
+            <div class="sidebar shadow-sm">
+                <a href="/" class="{% if page == 'home' %}active{% endif %}"><i class="bi bi-house me-2"></i>Dashboard</a>
+                <a href="/order" class="{% if page == 'order' %}active{% endif %}"><i class="bi bi-box me-2"></i>Orders</a>
+                <a href="/notify" class="{% if page == 'notification' %}active{% endif %}"><i class="bi bi-bell me-2"></i>Notification</a>
+                <a href="/price" class="{% if page == 'pricing' %}active{% endif %}"><i class="bi bi-cash me-2"></i>Pricing</a>
+                <a href="/setting" class="{% if page == 'setting' %}active{% endif %}"><i class="bi bi-gear me-2"></i>Setting</a>
+                <a href="/support" class="{% if page == 'support' %}active{% endif %}"><i class="bi bi-headset me-2"></i>Support & Help</a>
+                <a href="/profile" class="{% if page == 'profile' %}active{% endif %}"><i class="bi bi-person-circle me-2"></i>Profile</a>
+                <a href="/logout" class="{% if page == 'logout' %}active{% endif %}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+            </div>
+        </div>
+        <!-- MAIN CONTENT -->
+        <div class="col-lg-10 col-md-9 p-4">
+
+            <!-- HEADER -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="fw-semibold">Scrap Pricing</h3>
+                <button class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Add New Scrap
+                </button>
+            </div>
+
+            <!-- PRICING TABLE -->
+            <div class="table-responsive bg-white rounded shadow-sm p-3">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Scrap Name</th>
+                            <th>Price</th>
+                            <th>Unit</th>
+                            <th>Last Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>Iron</td>
+                            <td>₹25</td>
+                            <td>Per Kg</td>
+                            <td>10 Apr 2024</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm action-btn">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm action-btn">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Copper</td>
+                            <td>₹600</td>
+                            <td>Per Kg</td>
+                            <td>08 Apr 2024</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm action-btn">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm action-btn">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Plastic Bottles</td>
+                            <td>₹15</td>
+                            <td>Per Kg</td>
+                            <td>05 Apr 2024</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm action-btn">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm action-btn">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Old Newspapers</td>
+                            <td>₹10</td>
+                            <td>Per Kg</td>
+                            <td>02 Apr 2024</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm action-btn">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm action-btn">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

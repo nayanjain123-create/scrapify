@@ -1,71 +1,114 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
 
-{%block title%}Profile{% endblock title%}
-  
-  
-  {% block body %}      <!-- MAIN CONTENT -->
-  <div class="container-fluid mt-4">
-    <div class="row">
+{% block body %}
+<div class="container-fluid mt-4">
+<div class="row">
 
-        <!-- DESKTOP SIDEBAR -->
-        <div class="col-lg-2 d-none d-lg-block px-4">
-            <div class="sidebar shadow-sm">
-            <a href="/" class="{% if page == 'home' %}active{% endif %}"><i class="bi bi-house me-2"></i>Dashboard</a>
+<!-- SIDEBAR -->
+<div class="col-lg-2 d-none d-lg-block px-4">
+<div class="sidebar">
+<a href="/" class="{% if page == 'home' %}active{% endif %}"><i class="bi bi-house me-2"></i>Dashboard</a>
             <a href="/transaction" class="{% if page == 'transaction' %}active{% endif %}"><i class="bi bi-arrow-left-right me-2"></i>Transaction</a>
-            <a href="/notify" class="{% if page == 'notification' %}active{% endif %}"><i class="bi bi-bell me-2"></i>Notification</a>
-            <a href="/setting" class="{% if page == 'setting' %}active{% endif %}"><i class="bi bi-gear me-2"></i>Setting</a>
+            <a href="{% url 'seller_receipts' %}" class="{% if page == 'receipt' %}active{% endif %}">
+<i class="bi bi-receipt me-2"></i>Receipts
+</a>
+            <a href="/notify" class="{% if page == 'notification' %}active{% endif %}">
+                  <i class="bi bi-bell me-2"></i>
+                  Notification
+                  {% if unread_notifications > 0 %}
+                  <span class="badge bg-danger ms-1">{{ unread_notifications }}</span>
+                  {% endif %}
+                </a>
+            <!-- <a href="/setting" class="{% if page == 'setting' %}active{% endif %}"><i class="bi bi-gear me-2"></i>Setting</a> -->
             <a href="/support" class="{% if page == 'support' %}active{% endif %}"><i class="bi bi-headset me-2"></i>Support & Help</a>
             <a href="/profile" class="{% if page == 'profile' %}active{% endif %}"><i class="bi bi-person-circle me-2"></i>Profile</a>
-            <a href="/logout" class="{% if page == 'logout' %}active{% endif %}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
-            </div>
-        </div>
-<div class="container mt-5">
-
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-6 col-lg-4">
-
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-
-                    <i class="bi bi-person-circle fs-1 mb-3"></i>
-
-                    <h4>{{ request.user.username }}</h4>
-                    <p class="text-muted">{{ request.user.email }}</p>
-
-                    <span class="badge bg-primary">
-                        {{ request.user.profile.role }}
-                    </span>
-
-                    <hr>
-
-                    <form method="post">
-                        {% csrf_token %}
-
-                        <div class="mb-3 text-start">
-                            <label class="form-label">Email</label>
-                            <input type="email"
-                                   class="form-control"
-                                   name="email"
-                                   value="{{ request.user.email }}">
-                        </div>
-
-                        <button class="btn btn-success w-100">
-                            Update Profile
-                        </button>
-                    </form>
-
-                    <hr>
-
-                    <a href="{% url 'logout' %}" class="btn btn-danger w-100">
-                        Logout
-                    </a>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-
+            <a href="/logout" class="{% if page == 'logout' %}active{% endif %}" onclick="return confirm('Want to logout?')"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>            
+</div>
 </div>
 
+<div class="col-lg-10">
+
+<div class="row justify-content-center mt-1">
+<div class="col-md-7">
+
+<div class="card shadow">
+  <div class="card-body">
+<div class="card-body text-center">
+<i class="bi bi-person-circle fs-1 mb-3 text-center"></i>
+
+                    <h4 class="text-center">{{ request.user.username }}</h4>
+                  <span class="badge bg-primary">
+                        {{ request.user.profile.role }}
+                    </span></div>
+
+<form method="post">
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label class="form-label">First Name</label>
+<input type="text" class="form-control"
+name="first_name"
+value="{{ request.user.first_name }}"
+required>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Last Name</label>
+<input type="text" class="form-control"
+name="last_name"
+value="{{ request.user.last_name }}"
+required>
+</div>
+
+
+
+<div class="col-md-6 mb-3 text-start">
+<label class="form-label">Email</label>
+<input type="email" class="form-control" name="email"
+value="{{ request.user.email }}" readonly>
+</div>
+
+<div class="col-md-6 mb-3 text-start">
+<label class="form-label">Date of Birth</label>
+<input type="date" class="form-control" name="dob"
+value="{{ profile.dob|date:'Y-m-d' }}">
+</div>
+
+<div class="mb-2">
+<label class="form-label">Address</label>
+<input type="text" name="flat_no" class="form-control" value="{{ profile.flat_no }}" placeholder="Flat / Room No." required>
+</div>
+
+<div class="mb-2">
+<label class="form-label">Street</label>
+<input type="text" name="building_name" class="form-control" value="{{ profile.building_name }}" placeholder="Building / Chawl Name" required>
+</div>
+
+<div class="mb-2">
+<label class="form-label">Area</label>
+<input type="text" name="area" class="form-control" value="{{ profile.area }}" placeholder="e.g. Ghatkopar/Andheri" required>
+</div>
+
+<div class="mb-3 text-start">
+<label class="form-label">Pincode</label>
+<input type="text" class="form-control" placeholder="e.g. 4000xx" name="pincode"
+value="{{ profile.pincode }}">
+</div>
+</div>
+<center><button class=" btn btn-success w-80 ">
+Update Profile
+</button></center>
+</form>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
 {% endblock %}

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Receipts{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid mt-4">
+<div class="row">
+
+<!-- Sidebar -->
+
+<div class="col-lg-2 d-none d-lg-block px-4">
+            <div class="sidebar shadow-sm">
+                <a href="/" class="{% if page == 'home' %}active{% endif %}"><i class="bi bi-house me-2"></i>Dashboard</a>
+            <a href="/transaction" class="{% if page == 'transaction' %}active{% endif %}"><i class="bi bi-arrow-left-right me-2"></i>Transaction</a>
+            <a href="/seller-receipt/" class="{% if page == 'receipt' %}active{% endif %}">
+    <i class="bi bi-receipt me-2"></i>
+    Receipts
+    {% if new_receipts > 0 %}
+    <span class="badge bg-success ms-1">{{ new_receipts }}</span>
+    {% endif %}
+</a>
+
+            <a href="/notify" class="{% if page == 'notification' %}active{% endif %}">
+                  <i class="bi bi-bell me-2"></i>
+                  Notification
+                  {% if unread_notifications > 0 %}
+                  <span class="badge bg-danger ms-1">{{ unread_notifications }}</span>
+                  {% endif %}
+                </a>
+            <!-- <a href="/setting" class="{% if page == 'setting' %}active{% endif %}"><i class="bi bi-gear me-2"></i>Setting</a> -->
+            <a href="/support" class="{% if page == 'support' %}active{% endif %}"><i class="bi bi-headset me-2"></i>Support & Help</a>
+            <a href="/profile" class="{% if page == 'profile' %}active{% endif %}"><i class="bi bi-person-circle me-2"></i>Profile</a>
+            <a href="/logout" class="{% if page == 'logout' %}active{% endif %}" onclick="return confirm('Want to logout?')"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></div>
+        </div>
+        <!-- Main Content -->
+
+<div class="col-lg-10 px-md-4">
+
+<div class="container mt-0">
+
+<h3 class="fw-bold mb-4">
+<i class="bi bi-receipt"></i> Scrapify Receipts
+</h3>
+
+<div class="card shadow-sm">
+<div class="card-body">
+
+<table class="table table-hover table-bordered table-striped">
+
+<thead class="table-dark text-center">
+<tr>
+<th>ID</th>
+<th>Scrap Type</th>
+<th>Collector</th>
+<th>Date</th>
+<th>Total</th>
+<th class="text-center">Actions</th>
+</tr>
+</thead>
+
+<tbody class="text-center">
+
+{% for receipt in receipts %}
+
+<tr>
+
+<td>{{ forloop.counter }}</td>
+
+<td>
+<span><strong>
+{{ receipt.pickup_request.scrap.get_scrap_type_display }}
+</strong></span>
+</td>
+
+<td>{{ receipt.pickup_request.collector.username|capfirst }}</td>
+
+<td>{{ receipt.created_at|date:"d M Y" }}</td>
+
+<td class="fw-bold text-success">
+₹{{ receipt.total_amount }}
+</td>
+
+<td class="text-center">
+
+<a href="{% url 'view_receipt' receipt.id %}"
+class="btn btn-sm btn-primary"> <i class="bi bi-eye"></i> View </a>
+
+<a href="{% url 'delete_receipt' receipt.id %}"
+class="btn btn-sm btn-danger"
+onclick="return confirm('Want to delete this receipt?')"> <i class="bi bi-trash"></i> Delete </a>
+<a href="{% url 'download_receipt_pdf' receipt.id %}" class="btn bi-arrow-down btn-sm btn-success">
+Export
+</a>
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="6" class="text-center text-muted">
+No receipts available
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+{% endblock %}

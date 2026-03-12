@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock title %}
+
+{% block body %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+    <div class="card p-4 shadow-sm" style="width: 330px;">
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <h4 class="text-center mb-3">Post Scrap</h4>
+
+            <div class="mb-3">
+                <label for="scrap_type" class="form-label">Scrap Type</label>
+                <!-- <select class="form-select" id="scrap_type" name="scrap_type" required> -->
+                   <select name="scrap_type" class="form-control">
+
+<option value="plastic" {% if selected_scrap == "plastic" %}selected{% endif %}>Plastic</option>
+
+<option value="paper" {% if selected_scrap == "paper" %}selected{% endif %}>Paper</option>
+
+<option value="aluminium" {% if selected_scrap == "aluminium" %}selected{% endif %}>Aluminium</option>
+
+<option value="iron" {% if selected_scrap == "iron" %}selected{% endif %}>Iron</option>
+
+<option value="brass" {% if selected_scrap == "brass" %}selected{% endif %}>Brass</option>
+
+<option value="copper" {% if selected_scrap == "copper" %}selected{% endif %}>Copper</option>
+
+<option value="electronics" {% if selected_scrap == "electronics" %}selected{% endif %}>E-Waste</option>
+
+<option value="glass" {% if selected_scrap == "glass" %}selected{% endif %}>Glass</option>
+
+<option value="mixed" {% if selected_scrap == "mixed" %}selected{% endif %}>Mixed Scrap</option>
+
+</select>
+            </div>
+  
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Approx Quantity</label>
+                <input type="text" class="form-control" id="quantity"
+                       name="quantity" placeholder="e.g. 10kg" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Upload Scrap Image</label>
+                <input type="file" name="scrap_image" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="mobile" class="form-label">Pickup Adress</label>
+                <input type="text" class="form-control" rows="1" id="address"
+                       name="address" value="{{ request.user.profile.address }}" required></input>
+            </div>
+
+            <div class="mb-3">
+                <label for="area" class="form-label">Area</label>
+                <input type="text" class="form-control" id="area"
+                       name="area" value="{{ request.user.profile.area }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="pincode" class="form-label">Pincode</label>
+                <input type="text" maxlength="6" class="form-control" id="pincode"
+                       name="pincode" value="{{ request.user.profile.pincode }}" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Post Scrap</button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock body %}
+

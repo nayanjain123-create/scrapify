@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock title %}
+
+{% block body %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+    <div class="card p-4 shadow-sm" style="width: 330px;">
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <h4 class="text-center mb-3">OTP Verification</h4>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Enter OTP here</label>
+                <input type="text" class="form-control" id="otp" 
+                       name="otp" placeholder="eg. 123XXX" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Verify</button>
+
+            <div class="text-center mt-3">
+                Not received OTP? <a href="/">Resend OTP</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% endblock body %}
+
+
+    

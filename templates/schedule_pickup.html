@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Schedule Pickup{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <h4 class="mb-4">Schedule Pickup</h4>
+
+      <p><strong>Seller:</strong> {{ pickup_request.seller.username }}</p>
+      <p><strong>Area:</strong> {{ pickup_request.scrap.area }}</p>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label">Select Pickup Date & Time</label>
+          <input type="datetime-local"
+                 name="pickup_date"
+                 class="form-control"
+                 required>
+        </div>
+
+        <button type="submit" class="btn btn-success px-4">
+          Confirm Schedule
+        </button>
+
+        <a href="{% url 'order' %}" class="btn btn-secondary ms-2">
+          Cancel
+        </a>
+      </form>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

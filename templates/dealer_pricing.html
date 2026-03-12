@@ -1,0 +1,19 @@
+<h3>{{ collector.username }} Pricing</h3>
+
+<table class="table">
+
+<tr>
+<th>Scrap</th>
+<th>Price / KG</th>
+</tr>
+
+{% for p in prices %}
+
+<tr>
+<td>{{ p.scrap_type }}</td>
+<td>₹{{ p.price_per_kg }}</td>
+</tr>
+
+{% endfor %}
+
+</table>

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Pickup Request Details{% endblock %}
+
+{% block body %}
+<div class="container mt-2">
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold">PickUp Request Details</h4>
+                <div class="d-flex gap-2">
+
+    <a href="/order" class="btn btn-success">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+
+</div>
+            </div>
+
+      <!-- ================= SELLER INFO ================= -->
+      <h6 class="text-muted">Seller Information</h6>
+      <p><strong>Name:</strong> {{ pickup_request.seller.username }}</p>
+      <p><strong>Email:</strong> {{ pickup_request.seller.email }}</p>
+
+      <hr>
+
+      <!-- ================= LOCATION ================= -->
+      <h6 class="text-muted">Pickup Location</h6>
+      
+      <p><strong>Address:</strong> {{ scrap.flat_no }}, {{ scrap.building_name }}</p>
+      <p><strong>Area:</strong> {{ scrap.area }}</p>
+      <p><strong>Pincode:</strong> {{ scrap.pincode }}</p>
+
+      <hr>
+
+      <!-- ================= SCRAP DETAILS ================= -->
+      <h6 class="text-muted">Scrap Details</h6>
+      <p><strong>Type:</strong> {{ scrap.get_scrap_type_display }}</p>
+      <p><strong>Quantity:</strong> {{ scrap.quantity }} kg</p>
+      {% if scrap.scrap_image %}
+      <p><strong>Image: </strong><button
+        class="btn btn-dark btn-sm mb-2"
+        data-bs-toggle="modal"
+        data-bs-target="#imageModal{{order.id}}">
+        View Image
+      </button>
+      {% endif %}
+      {% if pickup_request.status == 'pending' %}
+
+      <!-- ================= ACCEPT WITH SCHEDULE ================= -->
+      <form method="post" action="{% url 'accept_pickup' pickup_request.id %}">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            Select Pickup Date & Time
+          </label>
+          <input type="datetime-local" name="scheduled_date" min="{{ today }}" required>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3 mt-3">
+
+          <button type="submit"
+                  class="btn btn-success px-4">
+            Accept
+          </button>
+
+          <a href="{% url 'reject_pickup' pickup_request.id %}"
+             class="btn btn-danger px-4">
+             Reject
+          </a>
+
+        </div>
+
+      </form>
+
+      {% elif pickup_request.status == 'accepted' %}
+
+        <div class="text-center">
+          <span class="badge bg-success fs-6 px-4 py-2">
+            Accepted
+          </span>
+
+          {% if pickup_request.scheduled_date %}
+          <p class="mt-3 text-muted">
+            Scheduled on
+            <strong>
+              {{ pickup_request.scheduled_date|date:"d M Y, h:i A" }}
+            </strong>
+          </p>
+          {% endif %}
+        </div>
+
+      {% elif pickup_request.status == 'rejected' %}
+
+        <div class="text-center">
+          <span class="badge bg-danger fs-6 px-4 py-2">
+            Rejected
+          </span>
+        </div>
+
+      {% endif %}
+
+    </div>
+    {% if scrap.scrap_image %}
+<div class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Scrap Image</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <img src="{{ scrap.scrap_image.url }}" class="img-fluid rounded shadow">
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endif %}
+  </div>
+
+</div>
+
+{% endblock %}

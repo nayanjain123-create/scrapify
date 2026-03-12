@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Collector Price{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h4>{{ collector.username }}</h4>
+
+<p>Scrap Type : {{ scrap.scrap_type }}</p>
+
+<h3 class="text-success">
+
+₹ {{ price.price_per_kg }} / kg
+
+</h3>
+
+<a href="{% url 'request_collector' scrap.id collector.id %}"
+class="btn btn-primary mt-3">
+
+Request Pickup
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

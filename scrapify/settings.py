@@ -16,9 +16,8 @@ from django.contrib.messages import constants as messages
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-exjpn5g_&&m*d&b703h8$yx4unule#b(jyg^dy^_t_$gdi_od8'
@@ -26,10 +25,18 @@ SECRET_KEY = 'django-insecure-exjpn5g_&&m*d&b703h8$yx4unule#b(jyg^dy^_t_$gdi_od8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['scrapify2005.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
-# Application definition
+EMAIL_HOST_USER = 'scrapify148@gmail.com'
+EMAIL_HOST_PASSWORD = 'fekj vfnr ugdv wuvj'
+
+DEFAULT_FROM_EMAIL = 'Scrapify <scrapify148@gmail.com>'
+
 
 INSTALLED_APPS = [
     
@@ -65,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'home.context_processors.sidebar_counts',
             ],
         },
     },

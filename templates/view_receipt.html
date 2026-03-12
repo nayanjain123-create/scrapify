@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Scrapify Receipt{% endblock %}
+
+{% block body %}
+
+<div class="container mt-3 col-md-6">
+
+<div class="card shadow-lg">
+<div class="card-body p-5">
+
+<!-- LETTERHEAD -->
+<div class="row align-items-center border-bottom pb-3 mb-4">
+
+<div class="col-md-6 d-flex align-items-center">
+
+<img src="{% static '/logo.png' %}" 
+style="height:60px; margin-right:15px;">
+
+<div>
+<h3 class="fw-bold text-success mb-0">SCRAPIFY</h3>
+<small class="text-muted">
+Smart Scrap Collection Platform
+</small>
+</div>
+
+</div>
+
+<div class="col-md-6 text-end">
+
+<h4 class="fw-bold">RECEIPT</h4>
+
+<p class="mb-0">
+Receipt ID : <strong>#{{ receipt.id }}</strong>
+</p>
+
+<p class="mb-0">
+Date : {{ receipt.created_at|date:"d M Y" }}
+</p>
+
+</div>
+
+</div>
+
+
+<!-- SELLER & COLLECTOR DETAILS -->
+
+<div class="row mb-4">
+
+<div class="col-md-6">
+
+<h6 class="fw-bold"><u>Seller Details</u></h6>
+
+<p class="mb-1">
+<strong> Name : </strong>{{ receipt.pickup_request.seller.username|capfirst }}
+</p>
+
+<p class="mb-1">
+<strong> Area : </strong>{{ request.user.profile.area|capfirst }}
+</p>
+
+</div>
+
+<div class="col-md-6 text-end">
+
+<h6 class="fw-bold"><u>Collector Details</u></h6>
+
+<p class="mb-1">
+<strong> Name : </strong>{{ receipt.collector.username|capfirst }}
+</p>
+
+</div>
+
+</div>
+
+
+<!-- SCRAP TABLE -->
+
+<table class="table table-bordered text-center" style="border: 2px;">
+
+<thead class="table-success" style="border-color: black;">
+
+<tr>
+
+<th>Scrap Type</th>
+<th>Quantity (kg)</th>
+<th>Price / kg</th>
+<th>Total</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in receipt.receiptitem_set.all %}
+
+<tr>
+
+<td>{{ item.scrap_type|capfirst }}</td>
+
+<td>{{ item.quantity }} kg</td>
+
+<td>₹{{ item.price_per_kg }}</td>
+
+<td class="fw-bold text-success">
+₹{{ item.total }}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+
+<!-- GRAND TOTAL -->
+
+<div class="row mt-4">
+
+<div class="col-md-6">
+
+<p class="text-muted">
+Thank you for using Scrapify.
+</p>
+
+</div>
+
+<div class="col-md-6 text-end">
+
+<h5 class="fw-bold mx-2">
+<u>Grand Total</u> : ₹{{ receipt.total_amount }}0
+</h5>
+
+</div>
+
+</div>
+
+
+<!-- PRINT BUTTON -->
+
+<div class="text-center mt-3">
+
+<button class="btn btn-primary me-2 bi-printer" onclick="window.print()"> Print</button>
+
+<a href="{% url 'download_receipt_pdf' receipt.id %}" class="btn btn-success bi-arrow-down">
+Download
+</a>
+<!-- {% if request.user.profile.role == "seller" and receipt.collector.id not in reviewed_collectors %}
+
+<button class="btn btn-primary"
+data-bs-toggle="modal"
+data-bs-target="#reviewModal{{ receipt.id }}">
+Review Collector
+</button>
+
+{% elif request.user.profile.role == "seller" and receipt.collector.id in reviewed_collectors %}
+
+<span class="text-success fw-bold">
+Review Submitted ✔
+</span>
+
+{% endif %} -->
+</div>
+</div>
+</div>
+
+</div>
+<div class="modal fade" id="reviewModal">
+<div class="modal-dialog">
+<div class="modal-content">
+
+{% for receipt in receipts %}
+
+<div class="card mb-3 p-3">
+
+{% if receipt.collector.id in reviewed_collectors %}
+
+<span class="text-success">Review Submitted ✔</span>
+
+{% else %}
+
+<button class="btn btn-primary"
+data-bs-toggle="modal"
+data-bs-target="#reviewModal{{ receipt.id }}">
+Review Collector
+</button>
+
+{% endif %}
+
+</div>
+
+{% endfor %}
+<div class="modal-body">
+
+<form method="POST" action="{% url 'submit_review' %}">
+{% csrf_token %}
+
+<input type="hidden" name="collector_id" value="{{ receipt.collector.id }}">
+
+<label>Rating</label>
+<select name="rating" class="form-control">
+
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
+
+</select>
+
+<label class="mt-2">Comment</label>
+<textarea name="comment" class="form-control"></textarea>
+
+<button class="btn btn-success mt-3 w-100">
+Submit Review
+</button>
+
+</form>
+
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

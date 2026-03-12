@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Choose Collector{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+
+<h3>Select Collector</h3>
+
+<table class="table bg-white">
+
+<tr>
+<th>Collector</th>
+<th>Area</th>
+<th>Price/kg</th>
+<th>Action</th>
+</tr>
+
+{% for collector in collectors %}
+
+<tr>
+
+<td>{{ collector.first_name }} {{ collector.last_name }}</td>
+<td>{{ collector.profile.area }}</td>
+
+<td>
+
+{% for price in prices %}
+{% if price.collector == collector %}
+₹ {{ price.price_per_kg }}
+{% endif %}
+{% endfor %}
+
+</td>
+
+<td>
+
+<a href="{% url 'collector_price_view' scrap.id collector.id %}"
+class="btn btn-primary btn-sm">
+View
+</a>
+<a href="{% url 'request_collector' scrap.id collector.id %}"
+class="btn btn-success btn-sm">
+
+Request
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

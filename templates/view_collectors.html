@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% block title %}Collectors{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+<div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold bi bi-person-circle"> Collectors in your pincode</h4>
+                <div class="d-flex gap-2">
+
+    <a href="/" class="btn btn-success">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
+
+    
+</div>
+            </div>
+<div class="row">
+
+{% for collector in collectors %}
+
+<div class="col-md-3 mb-3">
+<div class="card shadow-sm">
+
+<div class="card-body">
+<div class="d-flex justify-content-between">
+<h5>{{ collector.first_name|capfirst }} {{ collector.last_name|capfirst }}</h5>
+<!-- <h6>⭐ {{ collector.avg_rating|default:"1"|floatformat:1 }}</h6> -->
+</div>
+<p class="text-muted mb-1">
+📍 {{ collector.profile.area }}
+</p>
+
+<p class="text-muted">
+📞 {{ collector.profile.mobile }}
+</p>
+
+<button 
+class="btn btn-success view-prices-btn"
+data-id="{{ collector.id }}"
+data-bs-toggle="modal"
+data-bs-target="#priceModal">
+View Pricing
+</button>
+<button 
+class="btn btn-primary request-btn"
+data-id="{{ collector.id }}"
+data-name="{{ collector.username }}"
+data-bs-toggle="modal"
+data-bs-target="#requestModal">
+Request
+</button>
+
+</div>
+</div>
+</div>
+
+{% empty %}
+
+<div class="col-12">
+<div class="alert alert-info text-center">
+No collectors available in your area yet
+</div>
+</div>
+
+{% endfor %}
+
+</div>
+</div>
+<div class="modal fade" id="priceModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Scrap Prices</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Scrap Type</th>
+              <th>Price / Kg</th>
+            </tr>
+          </thead>
+
+          <tbody id="priceTableBody">
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="requestModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+        Send Scrap Request to <span id="collectorName"></span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+<form method="POST" action="{% url 'send_request_popup' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+      <div class="modal-body">
+
+        <input type="hidden" name="collector_id" id="collectorId">
+
+        <div class="mb-3">
+          <label for="scrap_type" class="form-label">Scrap Type</label>
+                <!-- <select class="form-select" id="scrap_type" name="scrap_type" required> -->
+                   <select name="scrap_type" class="form-select">
+
+<option value="plastic">Plastic</option>
+
+<option value="paper">Paper</option>
+
+<option value="aluminium">Aluminum</option>
+
+<option value="iron">Iron</option>
+
+<option value="brass">Brass</option>
+
+<option value="copper">Copper</option>
+
+<option value="electronics">E-Waste</option>
+
+<option value="glass">Glass</option>
+
+<option value="mixed">Mixed Scrap</option>
+
+</select>
+        </div>
+
+        <div class="mb-3">
+          <label>Quantity</label>
+          <input type="number" name="quantity" class="form-control" required>
+        </div>
+
+        <div class="col-md-12 mb-3">
+          <label>Upload Scrap Image</label>
+          <input type="file" name="scrap_image" class="form-control">
+        </div>
+
+        <div class="mb-2">
+<label class="form-label">Flat / Room No.</label>
+<input type="text" name="flat_no" class="form-control" required>
+</div>
+
+<div class="mb-2">
+<label class="form-label">Building / Chawl Name</label>
+<input type="text" name="building_name" class="form-control" required>
+</div>
+
+<div class="mb-2">
+<label class="form-label">Area / Landmark</label>
+<input type="text" name="area" class="form-control" required>
+</div>
+
+<div class="mb-2">
+<label class="form-label">Pincode</label>
+<input type="text" name="pincode" class="form-control" required>
+</div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-success">Send Request</button>
+      </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

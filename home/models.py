@@ -91,14 +91,22 @@ class Scrap(models.Model):
     def __str__(self):
         return f"{self.scrap_type} - {self.seller.username}"
         
-class Notification(models.Model):
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE)
-    message = models.TextField()
-    is_read = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+class ScrapPrice(models.Model):
+    collector = models.ForeignKey(User, on_delete=models.CASCADE)
+    scrap_type = models.CharField(
+    max_length=50,
+    choices=Scrap.SCRAP_TYPES
+    )
+
+    price_per_kg = models.DecimalField(max_digits=6, decimal_places=2)
+
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.receiver.username} - {self.message[:30]}"
+        return f"{self.collector.username} - {self.scrap_type}"
+
+
+
 
 
 class PickupRequest(models.Model):
@@ -125,20 +133,14 @@ class PickupRequest(models.Model):
     def __str__(self):
         return f"{self.scrap.scrap_type} - {self.seller.username}"
     
-
-class ScrapPrice(models.Model):
-    collector = models.ForeignKey(User, on_delete=models.CASCADE)
-    scrap_type = models.CharField(
-    max_length=50,
-    choices=Scrap.SCRAP_TYPES
-    )
-
-    price_per_kg = models.DecimalField(max_digits=6, decimal_places=2)
-
-    updated_at = models.DateTimeField(auto_now=True)
+class Notification(models.Model):
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.collector.username} - {self.scrap_type}"
+        return f"{self.receiver.username} - {self.message[:30]}"
 
 class PickupReceipt(models.Model):
 
